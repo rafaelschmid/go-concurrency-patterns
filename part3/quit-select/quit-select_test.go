@@ -14,7 +14,7 @@ import (
 func TestGenerator(t *testing.T) {
 	quit := make(chan bool)
 	ch := generator("Hi!", quit)
-	for i := rand.Intn(50); i >= 0; i-- {
+	for i := rand.Intn(10); i >= 0; i-- {
 		fmt.Println(<-ch, i)
 	}
 	quit <- true

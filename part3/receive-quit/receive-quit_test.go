@@ -8,9 +8,10 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"testing"
 )
 
-func main() {
+func TestGenerator(t *testing.T) {
 	quit := make(chan string)
 	ch := generator("Hi!", quit)
 	for i := rand.Intn(10); i >= 0; i-- {
