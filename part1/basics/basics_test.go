@@ -40,3 +40,14 @@ func TestGoBoringPrint(t *testing.T) {
 	time.Sleep(5 * time.Second)
 	fmt.Println("You're boring; I'm leaving.")
 }
+
+/*
+GOROUTINE
+Goroutine is an independently executing function
+It's not a thread.
+There might be only one thread in a program with thousands of goroutines.
+Instead, goroutines are multiplexed dynamically onto threads as needed to keep all the goroutines running.
+
+The main function couldn't see the output from the other goroutine.
+We need communication: channels
+*/

@@ -7,17 +7,18 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"testing"
+	"time"
 )
 
 func TestGenerator(t *testing.T) {
 	quit := make(chan bool)
 	ch := generator("Hi!", quit)
-	for i := rand.Intn(10); i >= 0; i-- {
+	for i := 10; i >= 0; i-- {
 		fmt.Println(<-ch, i)
 	}
 	quit <- true
+	time.Sleep(time.Second)
 }
 
 func generator(msg string, quit chan bool) <-chan string { // returns receive-only channel

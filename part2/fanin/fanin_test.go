@@ -12,6 +12,11 @@ import (
 	"time"
 )
 
+/*
+PATTERN - MULTIPLEXING
+We created an intermediary function to call both functions
+*/
+
 func TestGenerator(t *testing.T) {
 	c := fanIn(boring("Joe"), boring("Ann"))
 	for i := 0; i < 30; i++ {

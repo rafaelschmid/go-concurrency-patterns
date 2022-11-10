@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 	"time"
 )
@@ -18,7 +19,7 @@ func TestGenerator(t *testing.T) {
 		select {
 		case s := <-ch:
 			fmt.Println(s)
-		case <-time.After(1 * time.Second): // time.After returns a channel that waits N time to send a message
+		case <-time.After(5 * time.Second): // time.After returns a channel that waits N time to send a message
 			fmt.Println("Waited too long!")
 			return
 		}
@@ -30,7 +31,7 @@ func generator(msg string) <-chan string { // returns receive-only channel
 	go func() { // anonymous goroutine
 		for i := 0; ; i++ {
 			ch <- fmt.Sprintf("%s %d", msg, i)
-			time.Sleep(time.Second)
+			time.Sleep(time.Duration(rand.Intn(2e3)) * time.Millisecond)
 		}
 	}()
 	return ch

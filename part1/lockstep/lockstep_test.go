@@ -15,7 +15,7 @@ import (
 func TestGenerator(t *testing.T) {
 	joe := boring("Joe")
 	ann := boring("Ann")
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 10; i++ {
 		fmt.Println(<-joe)
 		fmt.Println(<-ann)
 	}
@@ -32,3 +32,9 @@ func boring(msg string) <-chan string { // returns receive-only channel
 	}()
 	return ch
 }
+
+/*
+These programs make Joe and Ann count in lockstep (alternating between one and the other).
+
+We can instead use a fan-in function to let whosoever is ready talk.
+*/

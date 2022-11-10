@@ -13,6 +13,15 @@ import (
 	"time"
 )
 
+/*
+PATTERN - SELECT
+It's like a switch, but each case is a communication:
+- All channels are evaluated.
+- Selection blocks until one communication can proceed.
+- If multiple can proceed, select chooses pseudo-randomly.
+- A default clause, if present, executes immediately if no channel is ready.
+*/
+
 func TestGenerator(t *testing.T) {
 	ch := fanIn(generator("Hello"), generator("Bye"))
 	for i := 0; i < 10; i++ {
@@ -30,6 +39,9 @@ func fanIn(ch1, ch2 <-chan string) <-chan string { // receives two read-only cha
 				new_ch <- s
 			case s := <-ch2:
 				new_ch <- s
+			default:
+				fmt.Println("No one is ready")
+				time.Sleep(time.Second)
 			}
 		}
 	}()
@@ -41,7 +53,7 @@ func generator(msg string) <-chan string { // returns receive-only channel
 	go func() { // anonymous goroutine
 		for i := 0; ; i++ {
 			ch <- fmt.Sprintf("%s %d", msg, i)
-			time.Sleep(time.Second)
+			time.Sleep(2 * time.Second)
 		}
 	}()
 	return ch

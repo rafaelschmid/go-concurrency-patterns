@@ -14,6 +14,9 @@ import (
 func TestGenerator(t *testing.T) {
 	ch := generator("Hi!")
 	timeout := time.After(5 * time.Second)
+	/*
+		something i have to do but i cant wait so much
+	*/
 	for i := 0; i < 10; i++ {
 		select {
 		case s := <-ch:

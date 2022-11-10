@@ -7,13 +7,20 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 	"time"
 )
 
+/*
+Restoring the sequence using a sophisticated method
+
+Send a channel on a channel, making goroutine wait its turn.
+*/
+
 type Message struct {
 	str   string
-	block chan int
+	block chan bool
 }
 
 func TestGenerator(t *testing.T) {
@@ -25,8 +32,8 @@ func TestGenerator(t *testing.T) {
 		msg2 := <-ch
 		fmt.Println(msg2.str)
 
-		<-msg1.block // reset channel, stop blocking
-		<-msg2.block
+		msg1.block <- true
+		msg2.block <- true
 	}
 }
 
@@ -48,12 +55,12 @@ func fanIn(ch1, ch2 <-chan Message) <-chan Message { // receives two read-only c
 
 func generator(msg string) <-chan Message { // returns receive-only channel
 	ch := make(chan Message)
-	blockingStep := make(chan int) // channel within channel to control exec, set false default
-	go func() {                    // anonymous goroutine
+	blockingStep := make(chan bool) // channel within channel to control exec, set false default
+	go func() {                     // anonymous goroutine
 		for i := 0; ; i++ {
 			ch <- Message{fmt.Sprintf("%s %d", msg, i), blockingStep}
-			time.Sleep(time.Second)
-			blockingStep <- 1 // block by waiting for input
+			time.Sleep(time.Duration(rand.Intn(2e3)) * time.Millisecond)
+			<-blockingStep // block by waiting for input
 		}
 	}()
 	return ch

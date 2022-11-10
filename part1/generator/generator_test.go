@@ -12,8 +12,10 @@ import (
 	"time"
 )
 
-// goroutine is launched inside the called function (more idiomatic)
-// multiple instances of the generator may be called
+/*
+PATTERN - GENERATOR
+Function that returns a channel
+*/
 
 func TestGenerator(t *testing.T) {
 	c := boring("boring!") // Function returning a channel.
